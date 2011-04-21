@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script src="./js/head.load.min.js" type="application/javascript"></script>
+<script type="text/javascript">
+head.js("http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js", "./js/jquery.jplayer.min.js",
+function(){
+    var lyrics = {};
+    lyrics.cur = 0;
+    lyrics.line = [
+                   [29, 40],
+                   [41, 51],
+                   [52, 63],
+                   [64, 73.5],
+                   [74, 81.5],
+                   [82, 87.5],
+                   [88, 93.5],
+                   [94, 97.5],
+                   [98, 105],
+                   [105.5, 111],
+                   [111.5, 116],
+                   [116.5, 122],
+                   [],
+                   ];
+    function time_hook(e){
+    	var time = e.jPlayer.status.currentTime;
+    	var ll = lyrics.line, lc = lyrics.cur;
+        $("#dbg").text(time);
+        for (var i = 0; i < ll.length; i++){
+            if (time < ll[lc][0] || time > ll[lc][1]) $("#ll_"+lc).removeClass("cur_ll");
+            if (time >= ll[i][0] && time <= ll[i][1]){
+                $("#ll_"+i).addClass("cur_ll");
+                lyrics.cur = i;
+                break;
+            }
+        }
+    }
+
+    $("#book_text p").click(function(){
+    	$("#jplayer").jPlayer("play", lyrics.line[parseFloat($(this).attr("id").substr(3), 10)][0]);
+    });
+
+    $("#jplayer").jPlayer({
+    	preload: "auto",
+		swfPath: "./js",
+    	ready: function () {
+    	      $(this).jPlayer("setMedia", {
+    	        mp3: "http://dl.dropbox.com/u/9754528/demo_1.mp3"
+    	      });
+    	    },
+  	    timeupdate: time_hook,
+  	    loadeddata: function(){$(this).jPlayer("play");}
+    });
+});
+</script>
+<link rel="stylesheet" type="text/css" media="all" href="./css/reset.css" />
+<link rel="stylesheet" type="text/css" media="all" href="./css/text.css" />
+<link rel="stylesheet" type="text/css" media="all" href="./css/960.css" />
+<link rel="stylesheet" type="text/css" media="all" href="./css/jplayer.blue.monday.css" />
+<style type="text/css">
+#book_text * { text-align: center; }
+.cur_ll { font-weight: bold; color: red; font-size: x-large; }
+</style>
+</head>
+<body>
+<div id="book_text" class="container_12">
+<h1>光の中に</h1>
+<h2>KOKIA</h2>
+<p id="ll_0">ねぇ　あなたは私(わたし)の手(て)を取(と)り</p>
+<p id="ll_1">共(とも)に歩(あゆ)もうと言(い)った</p>
+<p id="ll_2">1人(ひとり)過(す)ごした孤独(こどく)な時(とき)</p>
+<p id="ll_3">やっと終(お)わりを告(つ)げるの</p>
+<p id="ll_4">私(わたし)は今(いま)　あなたに出逢(であ)って</p>
+<p id="ll_5">生(い)きる喜(よろこ)びを知(し)った</p>
+<p id="ll_6">かけがえのない　ただ1人(ひとり)の為(ため)に</p>
+<p id="ll_7">生(い)きてゆく</p>
+<p id="ll_8">信(しん)じたいの　選(えら)んだこの路(みち)</p>
+<p id="ll_9">険(けわ)しくても正(ただ)しかったと</p>
+<p id="ll_10">愛(あい)する人(ひと)と同(おな)じ時間(じかん)を</p>
+<p id="ll_11">刻(きざ)んでゆくの</p>
+<p id="ll_12"></p>
+<p id="ll_13"></p>
+<p id="ll_14"></p>
+<p id="ll_15"></p>
+</div>
+<div id="player">
+<div id="jplayer"></div>
+<div class="jp-audio">
+ <div class="jp-type-single">
+  <div id="jp_interface_1" class="jp-interface">
+    <ul class="jp-controls">
+     <li><a href="#" class="jp-play" tabindex="1">play</a></li>
+     <li><a href="#" class="jp-pause" tabindex="1">pause</a></li>
+     <li><a href="#" class="jp-stop" tabindex="1">stop</a></li>
+     <li><a href="#" class="jp-mute" tabindex="1">mute</a></li>
+     <li><a href="#" class="jp-unmute" tabindex="1">unmute</a></li>
+    </ul>
+    <div class="jp-progress">
+     <div class="jp-seek-bar">
+      <div class="jp-play-bar"></div>
+     </div>
+    </div>
+    <div class="jp-volume-bar">
+     <div class="jp-volume-bar-value"></div>
+    </div>
+    <div class="jp-current-time"></div>
+    <div class="jp-duration"></div>
+  </div>
+ </div>
+</div>
+</div>
+<div id="dbg"></div>
+</body>
+</html>
