@@ -42,6 +42,7 @@ function(){
     });
 
     $("#jplayer").jPlayer({
+    	solution: "flash, html",
     	preload: "auto",
 		swfPath: "./js",
     	ready: function () {
@@ -50,7 +51,7 @@ function(){
     	      });
     	    },
   	    timeupdate: time_hook,
-  	    loadeddata: function(){$(this).jPlayer("play");}
+  	    loadeddata: function(){$("#dbg").text("loaded!");}
     });
 });
 </script>
