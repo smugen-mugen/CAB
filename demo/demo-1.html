@@ -2,10 +2,19 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--[if gte IE 9]><!-->
 <script src="./js/head.load.min.js" type="application/javascript"></script>
+<!--<![endif]--> 
+<!--[if lt IE 9]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="application/javascript"></script>
+<script src="./js/jquery.jplayer.min.js" type="application/javascript"></script>
+<![endif]--> 
 <script type="text/javascript">
-head.js("http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js", "./js/jquery.jplayer.min.js",
-function(){
+if (typeof head != "undefined")
+  head.js("http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js",
+          "./js/jquery.jplayer.min.js", init);
+else if (typeof $ != "undefined") $(init);
+function init(){
     var lyrics = {};
     lyrics.cur = 0;
     lyrics.line = [
@@ -23,9 +32,10 @@ function(){
                    [116.5, 122],
                    [],
                    ];
+    var $jP = $("#jplayer");
     function time_hook(e){
-    	var time = e.jPlayer.status.currentTime;
-    	var ll = lyrics.line, lc = lyrics.cur;
+        var time = e.jPlayer.status.currentTime;
+        var ll = lyrics.line, lc = lyrics.cur;
         $("#dbg").text(time);
         for (var i = 0; i < ll.length; i++){
             if (time < ll[lc][0] || time > ll[lc][1]) $("#ll_"+lc).removeClass("cur_ll");
@@ -38,22 +48,21 @@ function(){
     }
 
     $("#book_text p").click(function(){
-    	$("#jplayer").jPlayer("play", lyrics.line[parseFloat($(this).attr("id").substr(3), 10)][0]);
+        $jP.jPlayer("play", lyrics.line[parseFloat($(this).attr("id").substr(3), 10)][0]);
     });
 
-    $("#jplayer").jPlayer({
-    	solution: "flash, html",
-    	preload: "auto",
-		swfPath: "./js",
-    	ready: function () {
-    	      $(this).jPlayer("setMedia", {
-    	        mp3: "http://docs.google.com/uc?id=0B8zoNXfOSn3yMTAxZGZhMzAtNmYyOS00YjE4LWExZmEtMzE1M2RkNDFkMDRj"
-    	      });
-    	    },
-  	    timeupdate: time_hook,
-  	    loadeddata: function(){$("#dbg").text("loaded!");}
+    $jP.jPlayer({
+        solution: "flash",
+        preload: "auto",
+        swfPath: "./js",
+        ready: function () {
+              $(this).jPlayer("setMedia", {
+                mp3: "http://rigieq.bay.livefilestore.com/y1pLwajcJj96QaXAElBnIEQuystmGudOpd53rSNN1PvkvD-h26sTm7zKsPCic2fu77VU5gInkr7Qc9tWLNB7WQurppRV20QhnZE/09.%20KOKIA%20-%20%E5%85%89%E3%81%AE%E4%B8%AD%E3%81%AB.mp3"
+              });
+            },
+        timeupdate: time_hook,
     });
-});
+}
 </script>
 <link rel="stylesheet" type="text/css" media="all" href="./css/reset.css" />
 <link rel="stylesheet" type="text/css" media="all" href="./css/text.css" />
